@@ -237,7 +237,7 @@ export default {
   },
   mounted: function() {
     var url =
-      "http://178.128.24.70:8000/stores/" +
+      "http://localhost:8000/stores/" +
       this.group +
       "/" +
       this.name +
@@ -254,7 +254,7 @@ export default {
 
       this.frequently = this.items.slice(0, 3)
 
-      var url = "http://178.128.24.70:8000/stores/" + this.group + "/" + this.name;
+      var url = "http://localhost:8000/stores/" + this.group + "/" + this.name;
       this.$http.get(url).then(response => {
         var allitems = response.data.data;
         console.log(this.items);
