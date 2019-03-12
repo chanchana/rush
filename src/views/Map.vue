@@ -96,18 +96,18 @@ export default {
 		
 		// draw image
     var image = draw
-      .image("http://localhost:8000/stores/mapimage/" + group + "/" + name)
+      .image("http://178.128.24.70:8000/stores/mapimage/" + group + "/" + name)
       .loaded(function(loader) {
         this.size(loader.width, loader.height);
       });
 
-    this.$http.get("http://localhost:8000/stores/mappoint/" + group + "/" + name)
+    this.$http.get("http://178.128.24.70:8000/stores/mappoint/" + group + "/" + name)
       .then(response => {
         // data : point of all nodes
         var data = response.data;
         this.points = data;
 
-        this.$http.get("http://localhost:8000/stores/" + group + "/" + name + "/route/" + this.items_string)
+        this.$http.get("http://178.128.24.70:8000/stores/" + group + "/" + name + "/route/" + this.items_string)
           .then(response => {
 						// order : item order in route
 						var order = response.data.order;
@@ -128,7 +128,7 @@ export default {
 
 
 
-            this.$http.get("http://localhost:8000/stores/" + group + "/" + name)
+            this.$http.get("http://178.128.24.70:8000/stores/" + group + "/" + name)
               .then(response => {
 								// items : {} of all items
 								var items = response.data.data;
