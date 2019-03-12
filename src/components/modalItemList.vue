@@ -9,13 +9,13 @@
       <section class="modal-card-body" style="background-color: #27364B;">
         <div class="box" style="padding: 12px; overflow-y: scroll; height: 50vh; background-color: #FFFFFF;">
           <div class="box has-text-left" style="padding: 12px 18px; background-color: #EFEFEF; font-weight: 500;"
-          v-for="(value) in itemList" :key="value">
+          v-for="(item, index) in itemList" :key="index">
             <div class="columns is-mobile">
-              <div class="column is-10">
-                {{ category[value] }}
+              <div class="column is-11">
+                {{ item.Brand }}
               </div>
-              <div class="column is-2">
-                <i class="fas fa-trash" @click="deleteList(value)"></i>
+              <div class="column is-1">
+                <i class="fas fa-trash" @click="deleteList(item)"></i>
               </div>
             </div>
           </div>
@@ -56,19 +56,29 @@ export default {
       // console.log(this.$route.params.group)
       let link = '/map/'+this.$route.params.group+'/'+this.$route.params.name+'/route/'
       let route = ''
-      for (const key in this.itemList) {
-        if (this.itemList.hasOwnProperty(key)) {
-          const element = this.itemList[key]
-          if (route === '') route = element
-          else route += ';' + element
+      console.log('TESTTT' + this.itemId)
+      for (var i = 0; i < this.itemId.length; i++) {
+        console.log(i + '=========>' +  this.itemId[i])
+        if (this.itemId[i] != '') {
+          route += this.itemId[i]
+          if (i < this.itemId.length - 1) {
+            route += ';'
+          }
         }
       }
+      // for (const key in this.itemId) {
+      //   if (this.itemId.hasOwnProperty(key)) {
+      //     const element = this.itemList[key]
+      //     if (route === '') route = element
+      //     else route += ';' + element
+      //   }
+      // }
       // window.location.href = link + route
 
       this.$router.push(link+route)
     }
   },
-  props: ['category', 'itemList']
+  props: ['category', 'itemList', 'itemId']
 }
 </script>
 

@@ -3,7 +3,7 @@
     <img src="@/assets/app_logo.png" style="height:150px">
     <h1 class="title has-text-dark">Rush</h1>
     <br>
-    <a href="https://www.w3schools.com/html/html_links.asp" class="button is-rounded is-link is-medium is-fullwidth" @click="$router.push({name:'select', params:{group:group, name:name}})">Download APK File</a>
+    <a class="button is-rounded is-link is-medium is-fullwidth" @click="$router.push({name:'home'})">Use Rush on Website</a>
     <br>
     <button class="button is-rounded is-dark is-medium is-fullwidth" disabled @click="$router.push({name:'select', params:{group:group, name:name}})">Play Store (Soon)</button>
     <br>

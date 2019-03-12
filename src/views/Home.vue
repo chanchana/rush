@@ -21,73 +21,6 @@
       <div class="column has-text-left is-offset-1 is-10">
         <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <p style="margin-bottom: 3px;">select store to go :{{selected}}</p>
-        <!-- <div :class="'dropdown is-up is-fullwidth' + (nameSuper === chooseName || nameSuper === '' ? '' : ' is-active')">
-          <div class="dropdown-trigger">
-            <input class="input is-rounded" type="text" placeholder="Name of the store" style="margin-bottom: 6px;" v-model="nameSuper">
-          </div>
-          <div class="dropdown-menu" id="dropdown-menu" role="menu">
-            <div class="dropdown-content">
-              <a class="dropdown-item" v-for="(store, index) in searchingStore" :key="index" @click="selectName(store)">
-                {{ store.name }}
-              </a>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- <div class="select is-rounded is-fullwidth is-medium">
-          <select v-model="selected">
-            <option v-for="(store, index) in stores" :key="index" @click="selectName(store)" v-bind:value="store">
-              {{ store.name }}
-            </option>
-          </select>
-        </div> -->
-
-        <!-- <div class="dropdown is-up">
-          <div class="dropdown-trigger">
-            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu7">
-              <span>Name of the store...</span>
-              <span class="icon is-small">
-                <i class="fas fa-angle-up" aria-hidden="true"></i>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu" id="dropdown-menu7" role="menu">
-            <div class="dropdown-content">
-              <div class="dropdown-item">
-                <p>You can add the <code>is-up</code> modifier to have a dropdown menu that appears above the dropdown button.</p>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <!-- <div class="dropdown">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-      <span>Dropdown button</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu" role="menu">
-    <div class="dropdown-content">
-      <a href="#" class="dropdown-item">
-        Dropdown item
-      </a>
-      <a class="dropdown-item">
-        Other dropdown item
-      </a>
-      <a href="#" class="dropdown-item">
-        Other dropdown item
-      </a>
-    </div>
-  </div>
-</div> -->
-
-
-<!-- <div> -->
-  <!-- <multiselect v-model="value" :options="stores" :searchable="false" :close-on-select="false" :show-labels="false" placeholder="Pick a value"></multiselect>
-  <pre>{{ value  }}</pre> -->
-<!-- </div> -->
 
 <div :class="'dropdown is-up is-fullwidth ' + (select_active )">
   <div class="dropdown-trigger is-round">
@@ -109,7 +42,7 @@
 
         <div class="columns">
           <div class="column is-8 is-offset-2">
-          <button class="button is-rounded is-dark is-fullwidth" @click="$router.push({name:'select', params:{group:group, name:name}})">Next</button>
+          <button class="button is-rounded is-dark is-fullwidth" @click="$router.push({name:'select', params:{group:group, name:name, selected:' '}})">Next</button>
           </div>
         </div>
       </div>
@@ -183,16 +116,11 @@ export default {
     }
   },
   mounted: function() {
-    var url = "http://178.128.24.70:8000/stores"
+    var url = "http://localhost:8000/stores"
     this.$http.get(url)
     .then(response => {
         console.log(response.data)
         this.stores = response.data.map
-        // console.log(this.mapData)
-        // for (let i = 0; i < this.mapData.length; i++) {
-        //   console.log(this.mapData[i].name)
-        //   this.nameOfSupermarket.push(this.mapData[i].name)
-        // }
     })
   }
 }

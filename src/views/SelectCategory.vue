@@ -5,7 +5,7 @@
         <div class="navbar-start">
           <div class="navbar-item">
 
-            <a v-if="search.length == 0" class="button is-text is-myBack" @click="$router.push('/')">
+            <a v-if="search.length == 0" class="button is-text is-myBack" @click="$router.push({name:'select', params:{group:group, name:name, selected:item_url}})">
               <span class="icon">
                 <i class="fas fa-chevron-left"></i>
               </span>
@@ -17,7 +17,7 @@
               </span>
             </a>
 
-            <h5 class="subtitle is-5 has-text-dark has-text-weight-bold">Select Merchandises</h5>
+            <h5 class="subtitle is-5 has-text-dark has-text-weight-bold">{{category}}</h5>
           </div>
         </div>
         <div class="navbar-end">
@@ -35,8 +35,9 @@
     <br>
     <br>
     <br>
+
     <div class="columns">
-      <div class="column columnPadding">
+      <div class="column">
         <div class="control has-icons-right">
           <input class="input is-rounded" type="text" placeholder="Search" v-model="search">
           <span class="icon is-small is-right">
@@ -53,14 +54,14 @@
         :key="index"
         style="padding-left: 30px; padding-right: 30px; margin-left:70px"
       >
-        <button v-if="isSelected(item.ID)"  class="button is-fullwidth is-medium" style="background-color: #DAD6D6;" @click="deleteMe(item)">
+        <button v-if="isSelected(item.ID)" class="button is-fullwidth is-medium" style="background-color: #DAD6D6;" @click="deleteMe(item)">
           <span class="icon">
             <i class="fas fa-check"></i>
           </span>
-          <span><h6 class="subtitle is-6 has-text-weight-bold">{{item.Brand}}</h6></span>
+          <span><h6 class="subtitle is-5 has-text-weight-bold">{{item.Brand}}</h6></span>
         </button>
         <button v-else-if="item.ID != null" class="button is-fullwidth is-medium " @click="addToList(item)">
-          <h6 class="subtitle is-6">{{item.Brand}}</h6>
+          <h6 class="subtitle is-6">{{item.Brand}} {{item.Clicked}}</h6>
         </button>
         <button v-else disabled class="button is-fullwidth is-medium ">
           <h6 class="subtitle is-6">{{item.Brand}}</h6>
@@ -68,75 +69,64 @@
       </div>
     </div>
 
-    <div v-else>
+    <div v-if="search.length == 0">
       <div class="column columnPadding">
-        <figure class="image is-3by1 marginsTop canClick" @click="openPromotion">
-          <img src="@/assets/promo1.png">
-        </figure>
         <h6 class="subtitle marginsTop is-5 has-text-dark has-text-left">Frequently</h6>
       </div>
-      <!-- </div> -->
+    <!-- <div class="columns is-variable is-2" style="padding-left: 18px; padding-right: 18px;">
+      <div v-for="(item, index) in frequently" :key="index" class="column">
+          <div class="box canClick" @click.once="selectFakeItem('B1001')">
+            <img src="@/assets/book.png" class="icon-item">
+            <br>{{item.Brand}}
+          </div>
+        </div>
+    </div> -->
 
-      <div class="columns is-variable is-2" style="padding-left: 18px; padding-right: 18px;">
-        <div v-for="(item, index) in frequently1" :key="index" class="column">
+    <div class="columns is-variable is-1" style="padding-left: 18px; padding-right: 18px;">
+        <div v-for="(item, index) in frequently" :key="index" class="column">
           <div v-if="isSelected(item.ID)" class="box canClick has-text-weight-bold" style="background-color: #DAD6D6;" @click="deleteMe(item)">
-            <img :src="require('@/assets/' + item.ID + '.png')"  class="icon-item">
-            <br><i class="fas fa-check"></i>{{item.Brand}}
+            <img :src="require('@/assets/' + item.ID + '.png')" class="icon-item">
+            <br><i class="fas fa-check"></i> {{item.Brand}} 
           </div>
           <div v-else class="box canClick" @click="addToList(item)">
             <img :src="require('@/assets/' + item.ID + '.png')" class="icon-item">
             <br>{{item.Brand}}
           </div>
         </div>
-      </div>
-
-      <div class="columns is-variable is-2" style="padding-left: 18px; padding-right: 18px;">
-        <div v-for="(item, index) in frequently2" :key="index" class="column">
-          <div v-if="isSelected(item.ID)" class="box canClick has-text-weight-bold" style="background-color: #DAD6D6;" @click="deleteMe(item)">
-            <img :src="require('@/assets/' + item.ID + '.png')" class="icon-item">
-            <br><i class="fas fa-check"></i> {{item.Brand}}
-          </div>
-          <div v-else class="box canClick" @click="addToList(item)">
-            <img :src="require('@/assets/' + item.ID + '.png')" class="icon-item">
-            <br>{{item.Brand}}
-          </div>
-        </div>
-      </div>
-
-      <div class="columns">
-        <div class="column columnPadding">
-          <h6 class="subtitle marginsTop is-5 has-text-dark has-text-left">Category</h6>
-        </div>
-      </div>
-      <div
-        class="columns"
-        v-for="(cat, index) in category"
-        :key="index"
-        style="padding-left: 18px; padding-right: 18px;"
-      >
-        <button
-          class="button is-fullwidth is-medium marginsTop"
-          @click="$router.push({name:'select_category', params:{group:group, name:name, selected:item_url , category:cat}})
-  "
-        >
-          <h6 class="subtitle is-5">{{ cat }}</h6>
-        </button>
-      </div>
-      <div class="columns">
-        <div class="column columnPadding">
-          <h6 class="subtitle is-6 has-text-dark">or</h6>
-          <button
-            class="button is-fullwidth is-medium is-light"
-            style="background-color: #CBCBCB;"
-            @click="$router.push({name:'allitems', params:{group:group, name:name, selected:' ' + itemId.join(';')}})"
-          >
-            <h6 class="subtitle is-6">All Items</h6>
-          </button>
-          <br>
-        </div>
+    </div>
+    <div class="columns">
+      <div class="column columnPadding">
+        <h6 class="subtitle marginsTop is-5 has-text-dark has-text-left">Items</h6>
       </div>
     </div>
-    <modal-select-brand ref="modalSelectBrand"/>
+
+    <div
+      class="columns"
+      v-for="(item, index) in items"
+      :key="index"
+      style="padding-left: 18px; padding-right: 18px;"
+    >
+      <!-- <button v-if="isSelected(item.ID)" disabled class="button is-fullwidth is-medium marginsTop"  @click="addToList(item)">
+        <span><h6 class="subtitle is-6">{{ item.Brand }}</h6></span>
+        <span class="icon has-text-success">
+          <i class="fas fa-check-square"></i>
+        </span>
+      </button>
+      <button v-else class="button is-fullwidth is-medium marginsTop"  @click="addToList(item)">
+        <h6 class="subtitle is-6">{{ item.Brand }}</h6>
+      </button> -->
+      <button v-if="isSelected(item.ID)"  class="button is-fullwidth is-medium marginsTop" style="background-color: #DAD6D6;" @click="deleteMe(item)">
+          <span class="icon">
+            <i class="fas fa-check"></i>
+          </span>
+          <span><h6 class="subtitle is-5 has-text-weight-bold">{{item.Brand}}</h6></span>
+        </button>
+        <button v-else class="button is-fullwidth is-medium marginsTop" @click="addToList(item)">
+          <h6 class="subtitle is-5">{{item.Brand}}</h6>
+        </button>
+    </div>
+    </div>
+
     <modal-item-list
       ref="modalItemList"
       :category="category"
@@ -144,7 +134,6 @@
       :itemId="itemId"
       @deleteFromList="deleteMe"
     />
-    <modal-promotion ref="modalPromotion"/>
   </div>
 </template>
 
@@ -161,20 +150,20 @@ export default {
   created() {
     this.group = this.$route.params.group;
     this.name = this.$route.params.name;
+    this.category = this.$route.params.category;
+    console.log(this.category);
   },
   data() {
     return {
-      category: [],
+      category: "",
       items: [],
-      itemList: [],
       itemId: [],
-      frequently1: [],
-      frequently2: [],
-      searchItems: "",
+      itemList: [],
+      frequently: [],
+      item_count: 0,
       search: "",
       group: "",
-      name: "",
-      search_active: "is-active"
+      name: ""
     };
   },
   computed: {
@@ -184,9 +173,6 @@ export default {
       }else {
         return this.itemId.join(';')
       }
-    },
-    categoryloop: function(id) {
-      return '@/assets/' + id + '.png'
     },
     search_items: function() {
       var output = []
@@ -210,25 +196,20 @@ export default {
     }
   },
   methods: {
-    addToList: function(item) {
-      console.log(item.ID + ' <--- ID   Brand ---->  ' + item.Brand + '')
-      this.itemId.push(item.ID);
-      this.itemList.push(item);
-    },
-    clear_search: function() {
-      this.search = ''
-    },
     isSelected: function(itemid) {
-      // console.log(this.itemId)
-      // console.log(itemid + ' ===== ')
+      console.log(this.itemId)
+      console.log(itemid + ' ===== ')
       for (var i = 0; i < this.itemId.length; i++){
-        // console.log(itemid + ' ==????== ' + this.itemId[i])
+        console.log(itemid + ' ==????== ' + this.itemId[i])
         if (itemid == this.itemId[i]) {
-          // console.log('YESS')
+          console.log('YESS')
           return true
         }
       }
       return false
+    },
+    clear_search: function() {
+      this.search = ''
     },
     selectItem: function(name) {
       console.log(name);
@@ -236,7 +217,6 @@ export default {
     },
     selectFakeItem: function(id) {
       console.log(name);
-      // this.$refs.modalSelectBrand.openModal(name)
       if (this.itemList.indexOf(id) >= 0) return "";
       this.itemList.push(id);
     },
@@ -246,45 +226,48 @@ export default {
     openPromotion: function() {
       this.$refs.modalPromotion.openModal();
     },
+    addToList: function(item) {
+      this.itemId.push(item.ID);
+      this.itemList.push(item);
+    },
     deleteMe: function(item) {
       this.itemId.splice(this.itemId.indexOf(item.ID), 1)
       this.itemList.splice(this.itemList.indexOf(item), 1)
-    },
-    click_category: function(name) {
-      this.$route.push({
-        name: "select_category",
-        params: {
-          group: this.group,
-          name: this.name,
-          selected: this.itemList,
-          category: name
-        }
-      });
     }
   },
   mounted: function() {
-    var url = "http://localhost:8000/stores/" + this.group + "/" + this.name;
+    var url =
+      "http://localhost:8000/stores/" +
+      this.group +
+      "/" +
+      this.name +
+      "/" +
+      this.category;
     this.$http.get(url).then(response => {
-      console.log(response.data);
-      this.category = response.data.category;
       this.items = response.data.data;
+      this.item_count = this.items.length;
       console.log(this.items);
 
       this.items = this.items.sort(function (a, b) {
         return b.Clicked - a.Clicked
       })
 
-      this.frequently1 = this.items.slice(0, 3)
-      this.frequently2 = this.items.slice(3, 6)
+      this.frequently = this.items.slice(0, 3)
 
-      this.itemId = this.$route.params.selected.split(";")
-      for (var i = 0; i < this.itemId.length; i++) {
-        for (var j = 0; j < this.items.length; j++) {
-          if (this.itemId[i] == this.items[j].ID) {
-            this.itemList.push(this.items[j]);
+      var url = "http://localhost:8000/stores/" + this.group + "/" + this.name;
+      this.$http.get(url).then(response => {
+        var allitems = response.data.data;
+        console.log(this.items);
+
+        this.itemId = this.$route.params.selected.split(";");
+        for (var i = 0; i < this.itemId.length; i++) {
+          for (var j = 0; j < allitems.length; j++) {
+            if (this.itemId[i] == allitems[j].ID) {
+              this.itemList.push(allitems[j]);
+            }
           }
         }
-      }
+      });
     });
   }
 };
@@ -299,7 +282,6 @@ export default {
   width: 100%;
   top: 0;
 }
-/* #fdb849 */
 
 .navbar-menu {
   margin-right: 0px !important;
